@@ -12,7 +12,7 @@ interface TotalPasien extends RowDataPacket {
 export const getTotalPasienHarian = async (): Promise<number> => {
     try {
         const [rows] = await db.execute<TotalPasien[]>(
-            "SELECT COUNT(*) AS total_pasien FROM pasien WHERE tgl_daftar >= CURDATE() AND tgl_daftar < CURDATE() + INTERVAL 1 DAY;"
+            "SELECT COUNT(*) AS total_pasien FROM reg_periksa WHERE tgl_registrasi >= CURDATE() AND tgl_registrasi < CURDATE() + INTERVAL 1 DAY;"
         );
         return rows[0].total_pasien
     } catch (error) {
