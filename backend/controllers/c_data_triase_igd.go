@@ -6,18 +6,20 @@ import (
 	"time"
 
 	"backend-golang/config"
+	"backend-golang/dto"
 	"backend-golang/model"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetIgdHarian(c *gin.Context) {
+func GetTotalIgdHarian(c *gin.Context) {
 	loc, err := time.LoadLocation("Asia/Makassar")
 	if err != nil {
 		log.Println("Zona waktu error:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": "Zona waktu error",
+		c.JSON(http.StatusInternalServerError, dto.TotalIgdHarianResponse{
+			Success: false,
+			Message: "Zona waktu error",
+			Total:   0,
 		})
 		return
 	}
@@ -33,17 +35,17 @@ func GetIgdHarian(c *gin.Context) {
 		Where("tgl_kunjungan >= ? AND tgl_kunjungan < ?", start, end).
 		Count(&totalPasienIgdHarian).Error; err != nil {
 		log.Println("GetIgdHarian error:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"success": false,
-			"message": "Gagal mengambil data IGD harian",
-			"error":   "Gagal mengambil data",
+		c.JSON(http.StatusInternalServerError, dto.TotalIgdHarianResponse{
+			Success: false,
+			Message: "Gagal mengambil data IGD harian",
+			Total:   0,
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success":              true,
-		"message":              "Berhasil mengambil data IGD harian",
-		"totalPasienIgdHarian": totalPasienIgdHarian,
+	c.JSON(http.StatusOK, dto.TotalIgdHarianResponse{
+		Success: true,
+		Message: "Berhasil mengambil data IGD harian",
+		Total:   totalPasienIgdHarian,
 	})
 }

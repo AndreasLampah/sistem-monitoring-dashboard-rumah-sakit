@@ -7,6 +7,6 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
-	r.GET("/igd", controllers.GetIgdHarian)
-	r.GET("/pasien", controllers.GetPasienHarian)
+	r.GET("/igd", controllers.GetTotalIgdHarian)
+	r.GET("/pasien", controllers.GetTotalPasienHarian)
 }
